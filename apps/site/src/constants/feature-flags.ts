@@ -5,8 +5,9 @@ export const FEATURES = {
 export type Feature = (typeof FEATURES)[keyof typeof FEATURES];
 
 const featureValue = {
-  [FEATURES.ProductsPage]: true,
-  [FEATURES.ContactPage]: true,
+  [FEATURES.ProductsPage]: !import.meta.env.PROD,
+  [FEATURES.ContactPage]: !import.meta.env.PROD,
 };
 
-export const isFeatureEnabled = (feature: Feature) => featureValue[feature];
+export const isFeatureEnabled = (feature: Feature | undefined) =>
+  !!feature ? featureValue[feature] : true;

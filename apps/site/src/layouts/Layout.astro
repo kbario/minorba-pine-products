@@ -1,5 +1,5 @@
 ---
-import { FEATURES } from "../constants/feature-flags";
+import { FEATURES, isFeatureEnabled } from "../constants/feature-flags";
 
 interface Props {
   title?: string;
@@ -21,6 +21,7 @@ const links = [
     flag: FEATURES.ContactPage,
   },
 ];
+const headerLinks = links.slice(1).filter((x) => isFeatureEnabled(x.flag));
 
 const { title = "Minorba Pine Products" } = Astro.props;
 ---
@@ -41,20 +42,30 @@ const { title = "Minorba Pine Products" } = Astro.props;
       <div
         class="navbar navbar-center justify-center rounded bg-slate-200 lg:justify-start"
       >
-        <!-- <div class="flex-1"> -->
-        <a class="btn btn-ghost text-xl" href="/">Minorba Pine Products</a>
-        <!-- </div> -->
-        <!-- <ul class="menu menu-horizontal px-1"> -->
-        <!--   { -->
-        <!--     links -->
-        <!--       .filter((l) => l.flag) -->
-        <!--       .map((l) => ( -->
-        <!--         <li> -->
-        <!--           <a href={l.link}>{l.display}</a> -->
-        <!--         </li> -->
-        <!--       )) -->
-        <!--   } -->
-        <!-- </ul> -->
+        {
+          headerLinks.length ? (
+            <>
+              <div class="flex-1">
+                <a class="btn btn-ghost text-xl" href="/">
+                  Minorba Pine Products
+                </a>
+              </div>
+              <ul class="menu menu-horizontal px-1">
+                {links
+                  .filter((l) => l.flag)
+                  .map((l) => (
+                    <li>
+                      <a href={l.link}>{l.display}</a>
+                    </li>
+                  ))}
+              </ul>
+            </>
+          ) : (
+            <a class="btn btn-ghost text-xl" href="/">
+              Minorba Pine Products
+            </a>
+          )
+        }
       </div>
     </header>
     <slot />

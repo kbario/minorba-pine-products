@@ -16,14 +16,18 @@ const links = [
   {
     display: "See our products",
     link: "#our-products-section",
-    flag: FEATURES.ProductsPage,
+    // flag: FEATURES.ProductsPage,
   },
   {
     display: "Contact us",
     link: "#contact-section",
-    flag: FEATURES.ContactPage,
+    // flag: FEATURES.ContactPage,
   },
-] satisfies { display: string; link: string; flag: Feature }[];
+] satisfies { display: string; link: string; flag?: Feature }[] as {
+  display: string;
+  link: string;
+  flag?: Feature;
+}[];
 ---
 
 <Layout>
@@ -46,7 +50,7 @@ const links = [
         <ul class="flex gap-2">
           {
             links
-              .filter((l) => !l.flag || isFeatureEnabled(l.flag))
+              .filter((l) => isFeatureEnabled(l.flag))
               .map((l, i) => (
                 <li>
                   <a
@@ -116,6 +120,7 @@ const links = [
     <a
       class="btn btn-primary"
       href="https://www.google.com/maps/dir//Minorba+Pine+Products+33007+Albany+Hwy+Narrikup+WA+6326/@-34.7215654,117.7016359,16z/data=!4m8!4m7!1m0!1m5!1m1!1s0x2a390939f428a539:0x82f8231deb19a3a2!2m2!1d117.7016359!2d-34.7215654?entry=ttu&g_ep=EgoyMDI1MDEwOC4wIKXMDSoASAFQAw%3D%3D"
+      target="_blank"
     >
       Launch google maps now!
     </a>
