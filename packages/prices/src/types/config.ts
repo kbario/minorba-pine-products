@@ -1,3 +1,4 @@
+import { PricelistData } from '@minorba/prices';
 import {
   Diameter,
   Dimensions,
@@ -92,3 +93,8 @@ export type SawnFinalConfig = Omit<
 export type SawnPricelistData = {
   [k in SawnVariant]: Partial<{ [k in SawnLength]: SawnFinalConfig[] }>;
 };
+
+export type PricelistData = {
+  rounds: PostPricelistData,
+  sawn: SawnPricelistData
+} 

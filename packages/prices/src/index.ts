@@ -1,7 +1,7 @@
 import rebate from './gen/rebate';
 import retail from './gen/retail';
 import wholesale from './gen/wholesale';
-import { FinalConfig, PostConfig, PostPricelistData } from './types/config';
+import { FinalConfig, PostConfig, PostPricelistData, PricelistData } from './types/config';
 import {
   PostVariantDescriptions,
   PostVariantLables,
@@ -32,7 +32,7 @@ export {
   type FinalConfig,
   type PostVariant,
   type PostVariantLable,
-  type PostPricelistData as PricelistData,
+  type PricelistData,
   type SawnVariant,
   type SawnVariantLable,
 };
