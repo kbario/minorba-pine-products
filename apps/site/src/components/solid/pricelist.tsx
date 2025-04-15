@@ -1,6 +1,13 @@
 /** @jsxImportSource solid-js */
 
-import { createMemo, createSignal, For, Show } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  type Component,
+  For,
+  Show,
+} from "solid-js";
 
 import {
   flexRender,
@@ -26,7 +33,11 @@ import {
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import "../../fonts/NotoSans-Regular-normal.js";
-import type { PostPricelistData } from "@minorba/prices/src/types/config.js";
+import type {
+  FinalConfig,
+  PostPricelistData,
+  SawnPricelistData,
+} from "@minorba/prices/src/types/config.js";
 
 const TABLE_ID = "minorba-pricelist-table";
 const ROUNDS_TABLE_ORDER = [
@@ -93,6 +104,41 @@ const wholesaleCoverInfo = [
   {
     header: "Transportation Safety",
     body: "Safety is one of our highest priorities. It is the customer's responsibility to provide timber gluts of the size 100mm x 75mm x 2300mm for us to load your vehicle legally. If you do not provide gluts, only a legal volume of your product will be loaded. Minorba will be responsible for the loading configuration. If your products do not fit legally on the vehicle, you will have to return for the surplus. Transportation of goods to or from Minorba's Yard must be compliant with the Occupational Safety and Health Act 1984, the Chain of Responsibility Legislation contained in the Road Traffic (Administration) Act 2008 and the Road Traffic (Vehicles) Act 2012.",
+  },
+];
+
+const defaultColumns: ColumnDef<FinalConfig>[] = [
+  {
+    accessorKey: "length",
+    header: "Length (m)",
+  },
+  {
+    accessorKey: "diameter",
+    header: "Diameter (mm)",
+  },
+  {
+    accessorKey: "grade",
+    header: "Grade",
+  },
+  {
+    accessorKey: "code",
+    header: "Code",
+  },
+  {
+    accessorKey: "postPerPack",
+    header: "Posts / Pack",
+  },
+  {
+    accessorKey: "postPrice",
+    header: "Post Cost ($)",
+  },
+  {
+    accessorKey: "packPrice",
+    header: "Pack Cost ($)",
+  },
+  {
+    accessorKey: "weight",
+    header: "Weight",
   },
 ];
 
@@ -220,7 +266,16 @@ export default () => {
         ([a], [b]) =>
           ROUNDS_TABLE_ORDER.indexOf(a as PostVariant) -
           ROUNDS_TABLE_ORDER.indexOf(b as PostVariant),
-      ),
+      )
+      .map(([variant, data]) => ({
+        variant,
+        data: data.sort((a, b) =>
+          a.length === b.length
+            ? Number(String(a.diameter).split("-")[0]) -
+              Number(String(b.diameter).split("-")[0])
+            : a.length - b.length,
+        ),
+      })),
   );
   const sawnMemo = createMemo(() =>
     Object.entries(dataS().sawn)
@@ -232,9 +287,13 @@ export default () => {
       ),
   );
 
+  createEffect(() => {
+    console.log({ roundsMemo: roundsMemo() });
+  });
+
   return (
     <>
-      <div
+      {/* <div
         id="cover"
         style={{
           width: "595.28px",
@@ -243,7 +302,7 @@ export default () => {
         class="flex flex-col items-center justify-center gap-6"
       >
         <div class="flex flex-col items-center justify-center gap-3">
-          {/* <Logo width={128} /> */}
+          <Logo width={128} /> 
           <img style="width:256px; height:256px;" src="/Logo.png" alt="" />
           <div class="flex flex-col items-center justify-center">
             <h1 class="font-roboto text-3xl">Minorba Pine Products</h1>
@@ -285,7 +344,7 @@ export default () => {
             </div>
           ),
         )}
-      </div>
+      </div> */}
       <div>
         <select
           value={ogDataS()}
@@ -304,6 +363,11 @@ export default () => {
         <button onClick={closePdf}>Close PDF</button>
       </div>
       <For each={roundsMemo()}>
+        {(data) => (
+          <PostTable variant={data.variant as PostVariant} sizes={data.data} />
+        )}
+      </For>
+      {/* <For each={roundsMemo()}>
         {([variant, sizes]) => (
           <div class="p-8">
             <table class={`${TABLE_ID} border-0`} style="width: 100%">
@@ -473,124 +537,69 @@ export default () => {
             </table>
           </div>
         )}
-      </For>
+      </For> */}
     </>
   );
 };
 
-// const defaultColumns: ColumnDef<Person>[] = [
-//   {
-//     accessorKey: "firstName",
-//     cell: (info) => info.getValue(),
-//     footer: (info) => info.column.id,
-//   },
-//   {
-//     accessorFn: (row) => row.lastName,
-//     id: "lastName",
-//     cell: (info) => <i>{info.getValue<string>()}</i>,
-//     header: () => <span>Last Name</span>,
-//     footer: (info) => info.column.id,
-//   },
-//   {
-//     accessorKey: "age",
-//     header: () => "Age",
-//     footer: (info) => info.column.id,
-//   },
-//   {
-//     accessorKey: "visits",
-//     header: () => <span>Visits</span>,
-//     footer: (info) => info.column.id,
-//   },
-//   {
-//     accessorKey: "status",
-//     header: "Status",
-//     footer: (info) => info.column.id,
-//   },
-//   {
-//     accessorKey: "progress",
-//     header: "Profile Progress",
-//     footer: (info) => info.column.id,
-//   },
-// ];
+type TableProps = {
+  variant: PostVariant;
+  sizes: FinalConfig[];
+};
 
-// function App() {
-//   const [data, setData] = createSignal(defaultData);
-//   const rerender = () => setData(defaultData);
-
-//   const table = createSolidTable({
-//     get data() {
-//       return data();
-//     },
-//     columns: defaultColumns,
-//     getCoreRowModel: getCoreRowModel(),
-//   });
-
-//   return (
-//     <div class="p-2">
-//       <table>
-//         <thead>
-//           <For each={table.getHeaderGroups()}>
-//             {(headerGroup) => (
-//               <tr>
-//                 <For each={headerGroup.headers}>
-//                   {(header) => (
-//                     <th>
-//                       {header.isPlaceholder
-//                         ? null
-//                         : flexRender(
-//                             header.column.columnDef.header,
-//                             header.getContext(),
-//                           )}
-//                     </th>
-//                   )}
-//                 </For>
-//               </tr>
-//             )}
-//           </For>
-//         </thead>
-//         <tbody>
-//           <For each={table.getRowModel().rows}>
-//             {(row) => (
-//               <tr>
-//                 <For each={row.getVisibleCells()}>
-//                   {(cell) => (
-//                     <td>
-//                       {flexRender(
-//                         cell.column.columnDef.cell,
-//                         cell.getContext(),
-//                       )}
-//                     </td>
-//                   )}
-//                 </For>
-//               </tr>
-//             )}
-//           </For>
-//         </tbody>
-//         <tfoot>
-//           <For each={table.getFooterGroups()}>
-//             {(footerGroup) => (
-//               <tr>
-//                 <For each={footerGroup.headers}>
-//                   {(header) => (
-//                     <th>
-//                       {header.isPlaceholder
-//                         ? null
-//                         : flexRender(
-//                             header.column.columnDef.footer,
-//                             header.getContext(),
-//                           )}
-//                     </th>
-//                   )}
-//                 </For>
-//               </tr>
-//             )}
-//           </For>
-//         </tfoot>
-//       </table>
-//       <div class="h-4" />
-//       <button onClick={() => rerender()} class="border p-2">
-//         Rerender
-//       </button>
-//     </div>
-//   );
-// }
+const PostTable: Component<TableProps> = (props) => {
+  const table = createSolidTable({
+    get data() {
+      return props.sizes;
+    },
+    columns: defaultColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+  return (
+    <table>
+      <thead>
+        <For each={table.getHeaderGroups()}>
+          {(headerGroup) => (
+            <tr>
+              <For each={headerGroup.headers}>
+                {(header) => (
+                  <th>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </th>
+                )}
+              </For>
+            </tr>
+          )}
+        </For>
+      </thead>
+      <tbody>
+        <For each={table.getRowModel().rows}>
+          {(row) => {
+            console.log({ row });
+            return (
+              <>
+                <tr>
+                  <For each={row.getVisibleCells()}>
+                    {(cell) => (
+                      <td>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </td>
+                    )}
+                  </For>
+                </tr>
+              </>
+            );
+          }}
+        </For>
+      </tbody>
+    </table>
+  );
+};

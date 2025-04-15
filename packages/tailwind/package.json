@@ -1,0 +1,7 @@
+{
+  "name": "@minorba/tailwind",
+  "version": "0.0.1",
+  "description": "",
+  "main": "theme.css",
+  "license": "MIT"
+}
