@@ -1,5 +1,3 @@
-/** @jsxImportSource solid-js */
-
 import {
   createEffect,
   createMemo,
@@ -32,7 +30,7 @@ import {
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import "../../fonts/NotoSans-Regular-normal.js";
+import "../fonts/NotoSans-Regular-normal.js";
 import type {
   FinalConfig,
   PostPricelistData,

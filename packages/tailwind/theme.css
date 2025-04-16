@@ -1,6 +1,4 @@
 :root {
-  --view: 80vh;
-  oklab(0.98 0 0)
   --color-slate-50: oklch(0.984 0.003 247.858); /* slate 50 */
   --color-slate-100: oklch(0.968 0.007 247.896); /* slate 100 */
   --color-slate-200: oklch(0.929 0.013 255.508); /* slate 200 */
@@ -13,10 +11,11 @@
   --color-slate-900: oklch(0.208 0.042 265.755); /* slate 900 */
   --color-slate-950: oklch(0.129 0.042 264.695); /* slate 950 */
 
-  --surface-default: oklab(0.99 0 0); 
+  --surface-default: oklab(0.99 0 0);
   --surface-secondary: oklch(0.97 0 0);
   --surface-tertiary: oklch(0.93 0.01 0);
   --container-default: oklch(0.929 0.013 255.508); /* slate 200 */
+  --content-light: oklch(0.446 0.043 257.281); /* slate 600 */
   --content-default: oklch(0.372 0.044 257.287); /* slate 700 */
   --content-strong: oklch(0.279 0.041 260.031); /* slate 800 */
 
@@ -38,8 +37,11 @@
   --on-primary-container: oklch(0.448 0.119 151.328); /* green 800 */
 }
 [data-theme="dark"] {
-  --surface-default: oklch(0.968 0.007 247.896); /* slate 100 */
+  --surface-default: oklab(0.99 0 0);
+  --surface-secondary: oklch(0.97 0 0);
+  --surface-tertiary: oklch(0.93 0.01 0);
   --container-default: oklch(0.929 0.013 255.508); /* slate 200 */
+  --content-light: oklch(0.446 0.043 257.281); /* slate 600 */
   --content-default: oklch(0.372 0.044 257.287); /* slate 700 */
   --content-strong: oklch(0.279 0.041 260.031); /* slate 800 */
 
@@ -49,6 +51,8 @@
   --on-primary-container: oklch(0.448 0.119 151.328); /* green 800 */
 }
 @theme inline {
+  --view: 80svh;
+
   --font-sans:
     ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
@@ -62,8 +66,9 @@
   --color-white: #fff;
   --color-surface-default: var(--surface-default);
   --color-surface-secondary: var(--surface-secondary);
-  --color-surface-tertiary: var(--surface-tertiary);  
+  --color-surface-tertiary: var(--surface-tertiary);
   --color-container-default: var(--container-default);
+  --color-content-light: var(--content-light);
   --color-content-default: var(--content-default);
   --color-content-strong: var(--content-strong);
 
