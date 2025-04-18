@@ -1,45 +1,13 @@
 ---
-import { Button } from '@minorba/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@minorba/ui/side-sheet';
+import { Header } from '../components/header';
 import { FLAGS, isFeatureEnabled } from '../constants/feature-flags';
 import '../styles/global.css';
-import { SideSheet } from '../components/side-sheet';
 
 interface Props {
   title?: string;
   hideFooter?: boolean;
 }
 
-const links = [
-  {
-    display: 'Home',
-    link: '/',
-  },
-  {
-    display: 'Products',
-    link: '/products',
-    flag: FLAGS.Pages.Products,
-  },
-  {
-    display: 'Contact',
-    link: '/contact',
-    flag: FLAGS.Pages.Contact,
-  },
-  {
-    display: 'Decision Tree',
-    link: '/decision-tree',
-    flag: FLAGS.Pages.DecisionTree,
-  },
-];
-const headerLinks = links.slice(1).filter((x) => isFeatureEnabled(x.flag));
 const footerLinks = [
   {
     header: 'Main',
@@ -96,66 +64,7 @@ const { title = 'Minorba Pine Products', hideFooter = false } = Astro.props;
   </head>
   <body
     class='bg-surface-default text-content-default flex h-fit min-h-screen w-full flex-col'>
-    <header
-      class='sticky top-0 z-10 flex h-fit items-center justify-between p-4 backdrop-blur-lg'>
-      <div
-        class='bg-container-default rounded-default flex h-16 w-full items-center justify-between px-4 lg:justify-start'>
-        {
-          headerLinks.length ? (
-            <>
-              <div class='flex-1'>
-                <Button
-                  as={'a'}
-                  href='/'>
-                  Minorba Pine Products
-                </Button>
-              </div>
-              <header>
-                <ul class='hidden gap-1 px-1 sm:flex'>
-                  {headerLinks
-                    .filter((l) => isFeatureEnabled(l.flag))
-                    .map((l) => (
-                      <li>
-                        <Button
-                          as={'a'}
-                          href={l.link}>
-                          {l.display}
-                        </Button>
-                      </li>
-                    ))}
-                </ul>
-                {headerLinks.filter((l) => isFeatureEnabled(l.flag)) && (
-                  <SideSheet
-                    triggerClass='sm:hidden'
-                    title='Menu'
-                    client:idle>
-                    <ul class='gap-1 px-1'>
-                      {links
-                        .filter((l) => isFeatureEnabled(l.flag))
-                        .map((l) => (
-                          <li>
-                            <Button
-                              as={'a'}
-                              href={l.link}>
-                              {l.display}
-                            </Button>
-                          </li>
-                        ))}
-                    </ul>
-                  </SideSheet>
-                )}
-              </header>
-            </>
-          ) : (
-            <Button
-              as={'a'}
-              href='/'>
-              Minorba Pine Products
-            </Button>
-          )
-        }
-      </div>
-    </header>
+    <Header client:idle />
     <main class='h-fit grow'>
       <slot />
     </main>

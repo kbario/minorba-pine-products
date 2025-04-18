@@ -14,6 +14,7 @@
     "@minorba/prices": "workspace:^",
     "@minorba/tailwind": "workspace:^",
     "@minorba/ui": "workspace:*",
+    "@solid-primitives/scroll": "^2.1.0",
     "@tailwindcss/vite": "^4.1.4",
     "@tanstack/solid-table": "^8.21.3",
     "astro": "^5.7.0",

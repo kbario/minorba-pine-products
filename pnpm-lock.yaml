@@ -29,6 +29,9 @@ importers:
       '@minorba/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@solid-primitives/scroll':
+        specifier: ^2.1.0
+        version: 2.1.0(solid-js@1.9.5)
       '@tailwindcss/vite':
         specifier: ^4.1.4
         version: 4.1.4(vite@6.2.6)
@@ -2109,6 +2112,17 @@ packages:
       solid-js: ^1.6.12
     dependencies:
       '@solid-primitives/utils': 6.3.0(solid-js@1.9.5)
+      solid-js: 1.9.5
+    dev: false
+
+  /@solid-primitives/scroll@2.1.0(solid-js@1.9.5):
+    resolution: {integrity: sha512-MGtQuwgtSSV5cF+QvMmbTRc7BI470CUd7WV1mjlstmgwXvbBARKBan31JRNyeAFmkU/QJoELmfQ+wr+I2RyS1Q==}
+    peerDependencies:
+      solid-js: ^1.6.12
+    dependencies:
+      '@solid-primitives/event-listener': 2.4.0(solid-js@1.9.5)
+      '@solid-primitives/rootless': 1.5.0(solid-js@1.9.5)
+      '@solid-primitives/static-store': 0.1.0(solid-js@1.9.5)
       solid-js: 1.9.5
     dev: false
 
