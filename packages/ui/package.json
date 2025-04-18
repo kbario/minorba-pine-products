@@ -9,7 +9,7 @@
   ],
   "exports": {
     "./*": "./src/components/*/*.tsx",
-    "./utils/*": "./src/utils/*"
+    "./utils/*": "./src/utils/*.ts"
   },
   "scripts": {
     "test": "vitest"

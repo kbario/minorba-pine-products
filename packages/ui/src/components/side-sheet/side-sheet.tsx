@@ -3,7 +3,7 @@ import type { PolymorphicProps } from "@kobalte/core/polymorphic";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { Component, ComponentProps, JSX, ValidComponent } from "solid-js";
 import { splitProps } from "solid-js";
-import { cn } from "~/utils/cn";
+import { cn } from "../../utils/cn";
 
 const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
@@ -56,7 +56,7 @@ const SheetOverlay = <T extends ValidComponent = "div">(
 };
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[closed=]:duration-300 data-[expanded=]:duration-500 data-[expanded=]:animate-in data-[closed=]:animate-out",
+  "fixed z-50 gap-4 bg-surface-default p-6 shadow-lg transition ease-in-out data-[closed=]:duration-300 data-[expanded=]:duration-500 data-[expanded=]:animate-in data-[closed=]:animate-out",
   {
     variants: {
       position: {
@@ -101,7 +101,7 @@ const SheetContent = <T extends ValidComponent = "div">(
         {...others}
       >
         {local.children}
-        <SheetPrimitive.CloseButton class="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none">
+        {/* <SheetPrimitive.CloseButton class="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -116,7 +116,7 @@ const SheetContent = <T extends ValidComponent = "div">(
             <path d="M6 6l12 12" />
           </svg>
           <span class="sr-only">Close</span>
-        </SheetPrimitive.CloseButton>
+        </SheetPrimitive.CloseButton> */}
       </SheetPrimitive.Content>
     </SheetPortal>
   );
@@ -159,7 +159,7 @@ const SheetTitle = <T extends ValidComponent = "h2">(
   const [local, others] = splitProps(props as DialogTitleProps, ["class"]);
   return (
     <SheetPrimitive.Title
-      class={cn("text-foreground text-lg font-semibold", local.class)}
+      class={cn("text-on-surface-default text-lg font-semibold", local.class)}
       {...others}
     />
   );
@@ -176,7 +176,7 @@ const SheetDescription = <T extends ValidComponent = "p">(
   ]);
   return (
     <SheetPrimitive.Description
-      class={cn("text-muted-foreground text-sm", local.class)}
+      class={cn("text-on-surface-light text-sm", local.class)}
       {...others}
     />
   );

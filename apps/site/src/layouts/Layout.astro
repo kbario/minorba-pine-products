@@ -1,10 +1,21 @@
 ---
 import { Button } from '@minorba/ui/button';
-import { FEATURES, isFeatureEnabled } from '../constants/feature-flags';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@minorba/ui/side-sheet';
+import { FLAGS, isFeatureEnabled } from '../constants/feature-flags';
 import '../styles/global.css';
+import { SideSheet } from '../components/side-sheet';
 
 interface Props {
   title?: string;
+  hideFooter?: boolean;
 }
 
 const links = [
@@ -15,17 +26,51 @@ const links = [
   {
     display: 'Products',
     link: '/products',
-    flag: FEATURES.ProductsPage,
+    flag: FLAGS.Pages.Products,
   },
   {
     display: 'Contact',
     link: '/contact',
-    flag: FEATURES.ContactPage,
+    flag: FLAGS.Pages.Contact,
+  },
+  {
+    display: 'Decision Tree',
+    link: '/decision-tree',
+    flag: FLAGS.Pages.DecisionTree,
   },
 ];
 const headerLinks = links.slice(1).filter((x) => isFeatureEnabled(x.flag));
+const footerLinks = [
+  {
+    header: 'Main',
+    links: [
+      {
+        display: 'Home',
+        link: '/',
+      },
+      {
+        display: 'Products',
+        link: '/products',
+        flag: FLAGS.Pages.Products,
+      },
+      {
+        display: 'Contact',
+        link: '/contact',
+        flag: FLAGS.Pages.Contact,
+      },
+      {
+        display: 'Decision Tree',
+        link: '/decision-tree',
+        flag: FLAGS.Pages.DecisionTree,
+      },
+    ],
+  },
+].map((y) => ({
+  ...y,
+  links: y.links.filter((x) => isFeatureEnabled(x.flag)),
+}));
 
-const { title = 'Minorba Pine Products' } = Astro.props;
+const { title = 'Minorba Pine Products', hideFooter = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -49,7 +94,8 @@ const { title = 'Minorba Pine Products' } = Astro.props;
     />
     <title>{title}</title>
   </head>
-  <body class='bg-surface-default text-content-default w-full'>
+  <body
+    class='bg-surface-default text-content-default flex h-fit min-h-screen w-full flex-col'>
     <header
       class='sticky top-0 z-10 flex h-fit items-center justify-between p-4 backdrop-blur-lg'>
       <div
@@ -64,19 +110,41 @@ const { title = 'Minorba Pine Products' } = Astro.props;
                   Minorba Pine Products
                 </Button>
               </div>
-              <ul class='flex gap-1 px-1'>
-                {links
-                  .filter((l) => l.flag)
-                  .map((l) => (
-                    <li>
-                      <Button
-                        as={'a'}
-                        href={l.link}>
-                        {l.display}
-                      </Button>
-                    </li>
-                  ))}
-              </ul>
+              <header>
+                <ul class='hidden gap-1 px-1 sm:flex'>
+                  {headerLinks
+                    .filter((l) => isFeatureEnabled(l.flag))
+                    .map((l) => (
+                      <li>
+                        <Button
+                          as={'a'}
+                          href={l.link}>
+                          {l.display}
+                        </Button>
+                      </li>
+                    ))}
+                </ul>
+                {headerLinks.filter((l) => isFeatureEnabled(l.flag)) && (
+                  <SideSheet
+                    triggerClass='sm:hidden'
+                    title='Menu'
+                    client:idle>
+                    <ul class='gap-1 px-1'>
+                      {links
+                        .filter((l) => isFeatureEnabled(l.flag))
+                        .map((l) => (
+                          <li>
+                            <Button
+                              as={'a'}
+                              href={l.link}>
+                              {l.display}
+                            </Button>
+                          </li>
+                        ))}
+                    </ul>
+                  </SideSheet>
+                )}
+              </header>
             </>
           ) : (
             <Button
@@ -88,16 +156,45 @@ const { title = 'Minorba Pine Products' } = Astro.props;
         }
       </div>
     </header>
-    <slot />
-  </body>
+    <main class='h-fit grow'>
+      <slot />
+    </main>
+    {
+      !hideFooter && (
+        <footer class='bg-surface-tertiary flex flex-col items-center gap-4 p-6'>
+          <section class='flex w-full max-w-2xl flex-wrap gap-4'>
+            {footerLinks.map((f) => {
+              return (
+                <article>
+                  <h4 class='text-on-surface-light font-semibold uppercase'>
+                    {f.header}
+                  </h4>
+                  <ul>
+                    {f.links.map((l) => (
+                      <li>
+                        <a href={l.link}>{l.display}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </section>
+          <div class=''>
+            &copy; Minorba Pine Products {new Date().getFullYear()}
+          </div>
+        </footer>
+      )
+    }
 
-  <style is:global>
-    h1 {
-      font-size: 2rem;
-      font-weight: 500;
-    }
-    h2 {
-      font-size: 1.75rem;
-    }
-  </style>
+    <style is:global>
+      h1 {
+        font-size: 2rem;
+        font-weight: 500;
+      }
+      h2 {
+        font-size: 1.75rem;
+      }
+    </style>
+  </body>
 </html>

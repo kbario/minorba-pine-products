@@ -21,10 +21,6 @@
     "noUncheckedSideEffectImports": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "~/*": ["./src/*"]
-    },
     /* testing */
     "types": ["vite/client", "@testing-library/jest-dom"]
   },

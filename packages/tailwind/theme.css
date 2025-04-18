@@ -15,9 +15,9 @@
   --surface-secondary: oklch(0.97 0 0);
   --surface-tertiary: oklch(0.93 0.01 0);
   --container-default: oklch(0.929 0.013 255.508); /* slate 200 */
-  --content-light: oklch(0.446 0.043 257.281); /* slate 600 */
-  --content-default: oklch(0.372 0.044 257.287); /* slate 700 */
-  --content-strong: oklch(0.279 0.041 260.031); /* slate 800 */
+  --on-surface-light: oklch(0.446 0.043 257.281); /* slate 600 */
+  --on-surface-default: oklch(0.372 0.044 257.287); /* slate 700 */
+  --on-surface-strong: oklch(0.279 0.041 260.031); /* slate 800 */
 
   --color-green-50: oklch(0.982 0.018 155.826); /* green 50 */
   --color-green-100: oklch(0.962 0.044 156.743); /* green 100 */
@@ -41,9 +41,9 @@
   --surface-secondary: oklch(0.97 0 0);
   --surface-tertiary: oklch(0.93 0.01 0);
   --container-default: oklch(0.929 0.013 255.508); /* slate 200 */
-  --content-light: oklch(0.446 0.043 257.281); /* slate 600 */
-  --content-default: oklch(0.372 0.044 257.287); /* slate 700 */
-  --content-strong: oklch(0.279 0.041 260.031); /* slate 800 */
+  --on-surface-light: oklch(0.446 0.043 257.281); /* slate 600 */
+  --on-surface-default: oklch(0.372 0.044 257.287); /* slate 700 */
+  --on-surface-strong: oklch(0.279 0.041 260.031); /* slate 800 */
 
   --primary-default: oklch(0.627 0.194 149.214); /* green 600 */
   --on-primary-default: oklch(0.982 0.018 155.826); /* green 50 */
@@ -68,9 +68,9 @@
   --color-surface-secondary: var(--surface-secondary);
   --color-surface-tertiary: var(--surface-tertiary);
   --color-container-default: var(--container-default);
-  --color-content-light: var(--content-light);
-  --color-content-default: var(--content-default);
-  --color-content-strong: var(--content-strong);
+  --color-on-surface-light: var(--on-surface-light);
+  --color-on-surface-default: var(--on-surface-default);
+  --color-on-surface-strong: var(--on-surface-strong);
 
   --color-primary: var(--primary-default);
   --color-on-primary: var(--on-primary-default);
@@ -362,6 +362,7 @@
 
   --radius-*: initial;
   --radius-default: 1px;
+  --radius-lg: 3px;
 
   --shadow-*: initial;
   --shadow-xs:

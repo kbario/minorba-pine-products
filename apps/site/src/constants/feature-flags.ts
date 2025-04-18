@@ -1,12 +1,27 @@
-export const FEATURES = {
-  ProductsPage: "products-page",
-  ContactPage: "contact-page",
-};
-export type Feature = (typeof FEATURES)[keyof typeof FEATURES];
+const Pages = {
+  Products: "products-page",
+  Contact: "contact-page",
+  DecisionTree: "decision-tree-page",
+} as const;
+const Features = {
+  Ordering: "ordering-feature",
+  Pricelist: "pricelist-feature",
+} as const;
+
+export const FLAGS = {
+  Pages,
+  Features,
+} as const;
+export type Feature =
+  | (typeof Pages)[keyof typeof Pages]
+  | (typeof Features)[keyof typeof Features];
 
 const featureValue = {
-  [FEATURES.ProductsPage]: !import.meta.env.PROD,
-  [FEATURES.ContactPage]: !import.meta.env.PROD,
+  [FLAGS.Pages.Products]: !import.meta.env.PROD,
+  [FLAGS.Pages.Contact]: !import.meta.env.PROD,
+  [FLAGS.Pages.DecisionTree]: !import.meta.env.PROD,
+  [FLAGS.Features.Ordering]: false,
+  [FLAGS.Features.Pricelist]: false,
 };
 
 export const isFeatureEnabled = (feature: Feature | undefined) =>

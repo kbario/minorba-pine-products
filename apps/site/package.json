@@ -19,7 +19,9 @@
     "astro": "^5.7.0",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
+    "motion": "^12.7.3",
     "sharp": "^0.34.1",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.9.5",
     "tailwindcss": "^4.1.4",
     "vite-tsconfig-paths": "^5.1.4"

@@ -4,8 +4,24 @@ import { Image } from 'astro:assets';
 import mulchImg from '../assets/img/mulch.png';
 import postsImg from '../assets/img/pine_rounds.png';
 import { CopyButton } from '../components/copy-button';
-import { isFeatureEnabled, type Feature } from '../constants/feature-flags';
+import {
+  FLAGS,
+  isFeatureEnabled,
+  type Feature,
+} from '../constants/feature-flags';
 import Layout from '../layouts/Layout.astro';
+import Section from '../components/section.astro';
+import { heroButtonGroup, heroImage, heroTextGroup } from '../constants/ids';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@minorba/ui/card';
+import CardList from '../components/card-list.astro';
+import CardListItem from '../components/card-list-item.astro';
 
 const IMAGE_WIDTH = 300;
 
@@ -25,25 +41,77 @@ const links = [
   link: string;
   flag?: Feature;
 }[];
+
+const products = [
+  {
+    title: 'Strainer Posts',
+    desc: 'Strong enough to hold any distance of fencing.',
+    img: '',
+  },
+  {
+    title: 'Fence Posts',
+    desc: 'Ranging in size, suitable for everything from hobby farms to stations.',
+    img: '',
+  },
+  {
+    title: 'Horse Jump Rails',
+    desc: 'Milled to be perfectly cylindrical along their entire length with a smooth finish.',
+    img: '',
+  },
+  {
+    title: 'Sheep and Cattle Yard Posts',
+    desc: 'With a flat cut on one side, these posts are perfect for keeping even the stubbonest of animals at bay.',
+    img: '',
+  },
+  {
+    title: 'Pointed Posts',
+    desc: 'Milled to add extra lodgement of your posts in the ground.',
+    img: '',
+  },
+];
+const solutions = [
+  {
+    title: 'Boundary fences',
+    desc: 'Secure your property with high quality fence posts treated to last as long as you.',
+    img: '',
+  },
+  {
+    title: 'Horse Arenas',
+    desc: 'Beautifully crafted jump rails and boundary posts fitting for the most prestigious arenas.',
+    img: '',
+  },
+  {
+    title: 'Cattle and Sheep Yards',
+    desc: 'Build a strong and sturdy yard for any size animal.',
+    img: '',
+  },
+];
 ---
 
 <Layout>
-  <section class='h-(--view) flex items-center justify-center p-4 lg:p-8'>
+  <Section id='hero-section'>
     <div
-      class='flex max-w-xl flex-col items-center justify-center gap-4 text-center lg:max-w-4xl lg:flex-row lg:gap-8'>
+      class='flex max-w-xl flex-col items-center justify-center gap-6 text-center lg:max-w-4xl lg:flex-row lg:gap-8'>
       <Image
+        id={heroImage}
         src={postsImg}
         width={500}
         alt='pack of pine posts'
-        class='max-w-sm rounded-lg shadow-2xl'
+        class='max-w-sm rounded-lg shadow-lg'
       />
-      <div class='flex flex-col items-center gap-4'>
-        <h1>The best pine posts.</h1>
-        <p>
-          We service WA with the highest quality pine rounds. What ever fencing
-          project you have, we can help you.
-        </p>
-        <ul class='flex gap-2'>
+      <div class='flex flex-col items-center gap-6'>
+        <div
+          id={heroTextGroup}
+          class='flex flex-col items-center gap-4'>
+          <h1>The best pine posts.</h1>
+          <p>
+            We service WA with the highest quality pine rounds. What ever
+            fencing project you have, we can help you.
+          </p>
+        </div>
+        <ul
+          id={heroButtonGroup}
+          class='flex gap-2'>
           {
             links
               .filter((l) => isFeatureEnabled(l.flag))
@@ -61,61 +129,85 @@ const links = [
         </ul>
       </div>
     </div>
-  </section>
+  </Section>
+  <Section
+    id='solutions-section'
+    background='secondary'>
+    <h2>Solutions</h2>
+    <CardList>
+      {
+        solutions.map((s) => {
+          return (
+            <CardListItem>
+              <Card class='grow'>
+                <CardHeader>
+                  <CardTitle>{s.title}</CardTitle>
+                  {s.desc && <CardDescription>{s.desc}</CardDescription>}
+                </CardHeader>
+                <CardContent />
+                <CardFooter>
+                  {isFeatureEnabled(FLAGS.Features.Ordering) && (
+                    <Button
+                      appearance='primary'
+                      class=''>
+                      Order Now
+                    </Button>
+                  )}
+                  {isFeatureEnabled(FLAGS.Features.Pricelist) && (
+                    <Button class=''>See Prices</Button>
+                  )}
+                </CardFooter>
+              </Card>
+            </CardListItem>
+          );
+        })
+      }
+    </CardList>
+  </Section>
 
-  <section
-    id='our-products-section'
-    class='min-h-(--view) bg-surface-secondary relative flex w-full flex-col items-center justify-center gap-8 p-4'>
-    <h2>Our products:</h2>
-    <div class='flex w-full max-w-xl flex-col items-start gap-4'>
-      <p>We specialise in treated pine rounds for:</p>
-      <div
-        class='flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <ul class='pl-4'>
-          {
-            [
-              'Boundary fences',
-              'Horse jump rails',
-              'Cattle and sheep yards',
-            ].map((use) => <li class='list-inside list-disc'>{use}</li>)
-          }
-        </ul>
-        <Image
-          src={postsImg}
-          width={IMAGE_WIDTH}
-          alt='pack of pine posts'
-        />
-      </div>
-      <p>
-        We also sell fencing supplies and by-products of our timber processing:
-      </p>
-      <div class='flex w-full flex-col gap-4 sm:flex-row sm:justify-between'>
-        <ul class='pl-4'>
-          {
-            ['Mulch', 'Firewood'].map((use) => (
-              <li class='list-inside list-disc'>{use}</li>
-            ))
-          }
-        </ul>
-        <Image
-          src={mulchImg}
-          width={IMAGE_WIDTH}
-          alt='pile of pine mulch'
-        />
-      </div>
-    </div>
+  <Section id='our-products-section'>
+    <h2>Our Products</h2>
+    <CardList>
+      {
+        products.map((p) => {
+          return (
+            <CardListItem>
+              <Card class='grow'>
+                <CardHeader>
+                  <CardTitle>{p.title}</CardTitle>
+                  {p.desc && <CardDescription>{p.desc}</CardDescription>}
+                </CardHeader>
+                <CardContent />
+                <CardFooter>
+                  {isFeatureEnabled(FLAGS.Features.Ordering) && (
+                    <Button
+                      appearance='primary'
+                      class=''>
+                      Order Now
+                    </Button>
+                  )}
+                  {isFeatureEnabled(FLAGS.Features.Pricelist) && (
+                    <Button class=''>See Prices</Button>
+                  )}
+                </CardFooter>
+              </Card>
+            </CardListItem>
+          );
+        })
+      }
+    </CardList>
 
-    <Button
+    <!-- <Button
       appearance='primary'
       as={'a'}
       href={'#contact-section'}>
       Enquire now
-    </Button>
-  </section>
+    </Button> -->
+  </Section>
 
-  <section
+  <Section
     id='home-map-section'
-    class='h-(--view) flex w-full flex-col items-center justify-center gap-4 p-4 text-center'>
+    background='secondary'>
     <h2>Get directions:</h2>
     <i>Look for the big blue sign on Albany highway</i>
     <Button
@@ -125,8 +217,7 @@ const links = [
       target='_blank'>
       Launch google maps now!
     </Button>
-    <div
-      class='h-full max-h-[450px] w-full max-w-[600px] rounded p-2 shadow-md'>
+    <div class='h-[450px] w-full max-w-[600px] rounded p-2 shadow-md'>
       <iframe
         src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3279.3504067074864!2d117.69676499026464!3d-34.72156089387746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2a390939f428a539%3A0x82f8231deb19a3a2!2sMinorba%20Pine%20Products!5e0!3m2!1sen!2sau!4v1736653474638!5m2!1sen!2sau'
         style='border:0; width: 100%; height: 100%;'
@@ -135,11 +226,9 @@ const links = [
         referrerpolicy='no-referrer-when-downgrade'
       ></iframe>
     </div>
-  </section>
+  </Section>
 
-  <section
-    id='contact-section'
-    class='h-(--view) bg-surface-secondary relative flex w-full flex-col items-center justify-center gap-8 p-4'>
+  <Section id='contact-section'>
     <h2>Contact us</h2>
     <p class='max-w-xl text-center'>
       Whether it is to get a quote, place an order, or just see what we're up
@@ -189,5 +278,157 @@ const links = [
         ))
       }
     </ul>
-  </section>
+  </Section>
 </Layout>
+<script>
+  import { heroButtonGroup } from '../constants/ids';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttonGroup = document.getElementById(heroButtonGroup);
+    if (!buttonGroup) return;
+
+    // Create the animation with keyframes
+    const animation = buttonGroup.animate(
+      [
+        // Initial state (opacity: 0, scale: 0)
+        { opacity: 0, transform: 'scale(0.95) translateY(40%)' },
+        // Final state (opacity: 1, scale: 1)
+        { opacity: 1, transform: 'scale(1) translateY(0)' },
+      ],
+      {
+        // Animation options
+        duration: 750, // 0.4 seconds
+        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Approximation of spring with bounce: 0.5
+        fill: 'forwards', // Keep the final state
+      }
+    );
+
+    // Make sure the ball stays visible after animation completes
+    animation.onfinish = () => {
+      buttonGroup.style.opacity = '1';
+      buttonGroup.style.transform = 'scale(1)';
+    };
+  });
+</script>
+<script>
+  import { heroTextGroup } from '../constants/ids';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const textGroup = document.getElementById(heroTextGroup);
+    if (!textGroup) return;
+
+    // Create the animation with keyframes
+    const animation = textGroup.animate(
+      [
+        // Initial state (opacity: 0, scale: 0)
+        { opacity: 0, transform: 'scale(0.95) translateY(-20%)' },
+        // Final state (opacity: 1, scale: 1)
+        { opacity: 1, transform: 'scale(1) translateY(0)' },
+      ],
+      {
+        // Animation options
+        duration: 750, // 0.4 seconds
+        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Approximation of spring with bounce: 0.5
+        fill: 'forwards', // Keep the final state
+      }
+    );
+
+    // Make sure the ball stays visible after animation completes
+    animation.onfinish = () => {
+      textGroup.style.opacity = '1';
+      textGroup.style.transform = 'scale(1)';
+    };
+  });
+</script>
+<script>
+  import { heroImage } from '../constants/ids';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const textGroup = document.getElementById(heroImage);
+    if (!textGroup) return;
+
+    // Create the animation with keyframes
+    const animation = textGroup.animate(
+      [
+        // Initial state (opacity: 0, scale: 0)
+        { opacity: 0, transform: 'scale(0.95) translateY(-20%)' },
+        // Final state (opacity: 1, scale: 1)
+        { opacity: 1, transform: 'scale(1) translateY(0)' },
+      ],
+      {
+        // Animation options
+        duration: 750, // 0.4 seconds
+        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Approximation of spring with bounce: 0.5
+        fill: 'forwards', // Keep the final state
+      }
+    );
+
+    // Make sure the ball stays visible after animation completes
+    animation.onfinish = () => {
+      textGroup.style.opacity = '1';
+      textGroup.style.transform = 'scale(1)';
+    };
+  });
+</script>
+<!-- <script>
+  import { heroImage } from '../constants/ids';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const img = document.getElementById(heroImage);
+    if (!img) return;
+    let isFollowing = false;
+    let animationId: number | null = null;
+
+    // Function to update rotation based on time
+    function updateTimeBasedRotation() {
+      if (!isFollowing && img) {
+        const now = Date.now() / 1000;
+        // Complete cycle every 10 seconds
+        const angle = ((now % 10) / 10) * Math.PI * 2;
+
+        // Create a gentle rotation pattern
+        const rotationX = Math.sin(angle) * 5;
+        const rotationY = Math.cos(angle) * 5;
+
+        img.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+      }
+
+      animationId = requestAnimationFrame(updateTimeBasedRotation);
+    }
+
+    // Start the time-based rotation
+    animationId = requestAnimationFrame(updateTimeBasedRotation);
+
+    // Handle mouse movement
+    document.addEventListener('mousemove', (e) => {
+      const rect = img.getBoundingClientRect();
+      const divCenterX = rect.left + rect.width / 2;
+      const divCenterY = rect.top + rect.height / 2;
+
+      const distanceX = e.clientX - divCenterX;
+      const distanceY = e.clientY - divCenterY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      // Check if cursor is within 100px
+      if (distance < Math.max(rect.width, rect.height) + 100) {
+        isFollowing = true;
+
+        // Calculate rotation based on cursor position
+        // Limit rotation to a small amount (max 10 degrees)
+        const rotationY = Math.min(Math.max((distanceX / 100) * 10, -10), 10);
+        const rotationX = Math.min(Math.max(-(distanceY / 100) * 10, -10), 10);
+
+        img.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+      } else {
+        isFollowing = false;
+      }
+    });
+
+    // Clean up animation when page is unloaded
+    window.addEventListener('beforeunload', () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    });
+  });
+</script> -->
