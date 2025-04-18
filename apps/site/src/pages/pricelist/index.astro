@@ -1,9 +1,23 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Pricelist from '../../components/pricelist';
+import { DataTable } from '../../components/pricelist/data-table';
+import { columns, type Payment } from '../../components/pricelist/columns';
 ---
 
 <Layout>
   <h1>Products</h1>
   <Pricelist client:idle />
+  <DataTable
+    client:idle
+    data={[
+      {
+        id: '728ed52f',
+        amount: 100,
+        status: 'pending',
+        email: 'm@example.com',
+      },
+    ] satisfies Payment[]}
+    columns={columns}
+  />
 </Layout>

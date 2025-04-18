@@ -42,54 +42,61 @@ const headerLinks = links.slice(1).filter((x) => isFeatureEnabled(x.flag));
 
 export const Header: Component<ComponentProps<"header">> = () => {
   return (
-    <header
-      id={globalHeader}
-      class={
-        "sticky top-0 z-10 flex h-fit items-center justify-between p-4 backdrop-blur-lg"
-      }
-    >
-      <div class="bg-container-default rounded-default flex h-16 w-full items-center justify-between px-4 lg:justify-start">
-        <Show fallback={<HomeButton />} when={headerLinks.length}>
-          <div class="flex-1">
-            <HomeButton />
-          </div>
+    <>
+      <header
+        id={globalHeader}
+        class={
+          "h-(--header) sticky top-0 z-10 flex items-center justify-between p-4 backdrop-blur-lg"
+        }
+      >
+        <div class="bg-container-default rounded-default flex h-full w-full items-center justify-between px-4 lg:justify-start">
+          <Show fallback={<HomeButton />} when={headerLinks.length}>
+            <div class="flex-1">
+              <HomeButton />
+            </div>
 
-          <ul class="hidden gap-1 px-1 sm:flex">
-            <For each={headerLinks}>
-              {(l) => (
-                <li>
-                  <Button as={"a"} href={l.link}>
-                    {l.display}
-                  </Button>
-                </li>
-              )}
-            </For>
-          </ul>
-          <Show when={headerLinks.length}>
-            <Sheet>
-              <SheetTrigger size="icon" class="sm:hidden" as={Button<"button">}>
-                <HiOutlineBars3 />
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Menu</SheetTitle>
-                </SheetHeader>
-                <ul class="hidden gap-1 px-1 sm:flex">
-                  <For each={headerLinks}>
-                    {(l) => (
-                      <li>
-                        <Button as={"a"} href={l.link}>
-                          {l.display}
-                        </Button>
-                      </li>
-                    )}
-                  </For>
-                </ul>
-              </SheetContent>
-            </Sheet>
+            <ul class="hidden gap-1 px-1 sm:flex">
+              <For each={headerLinks}>
+                {(l) => (
+                  <li>
+                    <Button as={"a"} href={l.link}>
+                      {l.display}
+                    </Button>
+                  </li>
+                )}
+              </For>
+            </ul>
+            <Show when={headerLinks.length}>
+              <Sheet>
+                <SheetTrigger
+                  size="icon"
+                  class="sm:hidden"
+                  as={Button<"button">}
+                >
+                  <HiOutlineBars3 />
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Menu</SheetTitle>
+                  </SheetHeader>
+                  <ul class="hidden gap-1 px-1 sm:flex">
+                    <For each={headerLinks}>
+                      {(l) => (
+                        <li>
+                          <Button as={"a"} href={l.link}>
+                            {l.display}
+                          </Button>
+                        </li>
+                      )}
+                    </For>
+                  </ul>
+                </SheetContent>
+              </Sheet>
+            </Show>
           </Show>
-        </Show>
-      </div>
-    </header>
+        </div>
+      </header>
+      <div class="h-(--header) bg-container-default absolute left-0 right-0 top-0"></div>
+    </>
   );
 };

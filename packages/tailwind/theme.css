@@ -53,6 +53,7 @@
 }
 @theme inline {
   --view: 80svh;
+  --header: 96px;
 
   --font-sans:
     ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
