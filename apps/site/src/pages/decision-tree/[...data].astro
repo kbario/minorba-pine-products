@@ -1,0 +1,83 @@
+---
+import { Button } from '@minorba/ui/button';
+import { getCollection, getEntries, render } from 'astro:content';
+import { HiOutlineChevronRight } from 'solid-icons/hi';
+import { Bread } from '../../components/decision-tree/index';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('decisionTreeNodes');
+
+  const red =
+    (path?: string) =>
+    (
+      acc: ((typeof posts)[0] & { breadcrumbs: string })[],
+      p: (typeof posts)[0]
+    ) => {
+      acc.push({ ...p, breadcrumbs: path ? `${path}/${p.id}` : p.id });
+
+      const ids = p.data.links?.map((l) => l.id) || [];
+      posts
+        .filter((_p) => ids.includes(_p.id))
+        .reduce(red(path ? `${path}/${p.id}` : p.id), acc);
+
+      return acc;
+    };
+
+  const ch = posts
+    .filter((p) => p.id === 'decision-tree')
+    .reduce(red(), [])
+    .map((post) => ({
+      params: {
+        data:
+          post.breadcrumbs
+            .split('/')
+            .filter((x) => x !== 'decision-tree')
+            .join('/') || (undefined as unknown as string),
+      },
+      props: {
+        ...post,
+        data: {
+          ...post.data,
+        },
+      },
+    }));
+
+  // await writeFile('./decision-tree-data.json', JSON.stringify(ch, null, 2));
+  return ch;
+}
+
+const { data } = Astro.params;
+const props = Astro.props;
+
+const links = props.data.links?.length
+  ? await getEntries(props.data.links)
+  : [];
+
+const { Content } = await render(props);
+---
+
+<Layout class='flex flex-col gap-4 p-6'>
+  <h1>Decision Tree</h1>
+  <Bread
+    client:idle
+    data={props.breadcrumbs}
+  />
+  <Content />
+  <ul class='flex flex-col gap-2'>
+    {
+      links?.map((l) => {
+        return (
+          <li>
+            <Button
+              as={'a'}
+              href={`/${props.breadcrumbs}/${l.id}`}>
+              {l.data.title}
+              <HiOutlineChevronRight />
+            </Button>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Layout>

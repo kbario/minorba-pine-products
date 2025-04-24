@@ -1,15 +1,3 @@
-import { For, Show } from "solid-js";
-import {
-  ColumnDef,
-  createSolidTable,
-  flexRender,
-  getCoreRowModel,
-} from "@tanstack/solid-table";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
 import type { Component, ComponentProps } from "solid-js";
 import { splitProps } from "solid-js";
 
@@ -97,11 +85,11 @@ const TableCaption: Component<ComponentProps<"caption">> = (props) => {
 
 export {
   Table,
-  TableHeader,
   TableBody,
+  TableCaption,
+  TableCell,
   TableFooter,
   TableHead,
+  TableHeader,
   TableRow,
-  TableCell,
-  TableCaption,
 };

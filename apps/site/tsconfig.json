@@ -8,6 +8,9 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    // https://docs.astro.build/en/guides/content-collections/#typescript-configuration-for-collections
+    "strictNullChecks": true, // add if using `base` template
+    "allowJs": true // required, and included with all Astro templates
   }
 }

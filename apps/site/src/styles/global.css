@@ -1,3 +1,25 @@
 @import "tailwindcss";
 @import "../../node_modules/@minorba/tailwind/theme.css";
 @source "../../node_modules/@minorba/ui";
+
+thead {
+  @apply [&_tr]:border-b;
+}
+tbody {
+  @apply [&_tr:last-child]:border-0;
+}
+tfoot {
+  @apply bg-surface-default text-on-surface-default font-medium;
+}
+tr {
+  @apply hover:bg-surface-secondary data-[state=selected]:bg-surface-secondary border-b transition-colors;
+}
+th {
+  @apply text-on-surface-default h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0;
+}
+td {
+  @apply p-2 align-middle [&:has([role=checkbox])]:pr-0;
+}
+caption {
+  @apply text-on-surface-default mt-4 text-sm;
+}
