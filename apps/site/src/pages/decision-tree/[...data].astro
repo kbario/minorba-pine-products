@@ -60,7 +60,7 @@ const { Content } = await render(props);
 <Layout class='flex flex-col gap-4 p-6'>
   <h1>Decision Tree</h1>
   <Bread
-    client:idle
+    class='bg-surface-default sticky top-24 flex h-12 items-center'
     data={props.breadcrumbs}
   />
   <Content />

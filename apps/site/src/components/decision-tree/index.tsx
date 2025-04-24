@@ -57,6 +57,7 @@ export function DecisionTree(props: DecisionTreeProps) {
 
 type BreadProps = {
   data: string;
+  class?: string;
 };
 
 export const Bread = (props: BreadProps) => {
@@ -79,7 +80,7 @@ export const Bread = (props: BreadProps) => {
     );
   });
   return (
-    <Breadcrumb>
+    <Breadcrumb class={props.class}>
       <BreadcrumbList>
         <Show when={x().length}>
           <For each={x()}>
